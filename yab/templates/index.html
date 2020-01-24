@@ -1,0 +1,17 @@
+{% extends "layouts/default.html" %}
+{% block title %}Welcome to YAB{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <h3 class="m-4">List of Blog Posts</h3>
+  </div>
+  <ul class="list-group">
+    {% for entry in entries %}
+    <li class="list-group-item"><a href="/view/{{ entry.id }}">{{ entry.title }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row mt-2 justify-content-center">
+    <a href="/add" class="btn btn-primary">Add Blog Post</a>
+  </div>
+</div>
+{% endblock %}

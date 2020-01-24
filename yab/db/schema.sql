@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS entry (
+	id SERIAL PRIMARY KEY,
+	title VARCHAR(300) NOT NULL,
+	content TEXT
+);
+

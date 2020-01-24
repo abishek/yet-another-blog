@@ -1,0 +1,17 @@
+{% extends "layouts/default.html" %}
+{% block title %}Welcome to YAB{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <h3 class="m-4">{{ entry.title }}</h3>
+  </div>
+  <div class="row">
+    <div class="container border-bottom border-primary mb-2 pb-2">
+      {{ entry.content | safe}}
+    </div>
+  </div>
+  <div class="row m-4 justify-content-center">
+    <a class="btn btn-outline-secondary" href="/">Back</a>
+  </div>
+</div>
+{% endblock %}
