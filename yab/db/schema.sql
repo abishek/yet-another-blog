@@ -3,4 +3,3 @@ CREATE TABLE IF NOT EXISTS entry (
 	title VARCHAR(300) NOT NULL,
 	content TEXT
 );
-

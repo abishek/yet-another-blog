@@ -10,7 +10,8 @@
   (:import-from :yab.entry
                 :get-entry
                 :get-all-entries
-                :add-and-return-entry)
+                :add-and-return-entry
+                :update-and-return-entry)
   (:export :*web*))
 (in-package :yab.web)
 
@@ -32,7 +33,11 @@
           (list :entries (get-all-entries))))
 
 (defroute "/add" ()
-  (render #P"edit.html"))
+  (render #P"add.html"))
+
+(defroute "/edit/:id" (&key id)
+  (render #P"edit.html"
+          (list :entry (get-entry id))))
 
 (defroute "/view/:id" (&key id)
   (render #P"view.html"
@@ -40,10 +45,11 @@
 
 (defroute ("/add-entry" :method :POST) (&key _parsed)
   (render #P"view.html"
-          (list :cb (add-and-return-entry _parsed))))
+          (list :entry (add-and-return-entry _parsed))))
 
-(defroute "/update-entry" ()
-  (render #P"view.html"))
+(defroute ("/update-entry/:id" :method :POST) (&key id _parsed)
+  (render #P"view.html"
+          (list :entry (update-and-return-entry id _parsed))))
 
 ;;
 ;; Error pages
