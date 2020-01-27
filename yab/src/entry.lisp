@@ -21,9 +21,10 @@
 (defun get-entry (id)
   (with-connection (db)
     (retrieve-one
-     (select :*
-       (from :entry)
-       (where (:= :id id))))))
+     (select (:entry.id :title :content (:as :label :category))
+             (from :entry)
+             (full-join :category :on (:= :entry.category :category.id))
+             (where (:= :entry.id id))))))
 
 (defun extract-title (data)
   (loop
@@ -39,28 +40,38 @@
        (if (equalp (car assoc) "content")
            (return (cdr assoc)))))
 
+(defun extract-category (data)
+  (loop
+     for assoc in data
+     do
+       (if (equalp (car assoc) "category")
+           (return (cdr assoc)))))
+
 (defun add-and-return-entry (entry-data)
   (let ((title (extract-title entry-data))
-        (content (extract-content entry-data)))
+        (content (extract-content entry-data))
+        (category (extract-category entry-data)))
     (with-connection (db)
       (get-entry
        (getf
         (retrieve-one
          (insert-into :entry
            (set= :title title
-                 :content content)
+                 :content content
+                 :category category)
            (returning :id))) :id)))))
   
 
 (defun update-and-return-entry (id entry-data)
   (let ((title (extract-title entry-data))
-        (content (extract-content entry-data)))
+        (content (extract-content entry-data))
+        (category (extract-category entry-data)))
     (progn
       (with-connection (db)
         (execute
          (update :entry
            (set= :title title
-                 :content content)
+                 :content content
+                 :category category)
            (where (:= :id id)))))
       (get-entry id))))
-                             
